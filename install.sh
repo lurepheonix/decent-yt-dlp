@@ -231,7 +231,9 @@ set -e
 
 if [ $_already -eq 0 ]; then
     echo "[decent-yt-dlp] yt-dlp already managed by uv — upgrading..."
-    "$UV_BIN" tool upgrade yt-dlp --with curl_cffi --with cffi
+    # uv tool upgrade retains the additional packages recorded at install time;
+    # unlike `tool install`, it does not accept --with.
+    "$UV_BIN" tool upgrade yt-dlp
 else
     "$UV_BIN" tool install yt-dlp --with curl_cffi --with cffi
 fi

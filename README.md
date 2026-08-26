@@ -28,7 +28,7 @@ DECENT_YT_DLP_BIN_DIR=~/bin ./install.sh
 
 1. Abort if `yt-dlp` already exists in `PATH` (e.g. Homebrew, `/usr/bin/yt-dlp`, `pipx`). Uninstall it yourself first — avoids silently shadowing system installs.
 2. Bootstrap `uv` if missing (`https://astral.sh/uv/install.sh`).
-3. Run `uv tool install yt-dlp --with curl_cffi --with cffi` (or `upgrade` if already managed).
+3. Run `uv tool install yt-dlp --with curl_cffi --with cffi` (or `uv tool upgrade yt-dlp` if already managed; installed extras are retained).
 4. Verify `cffi` + `curl_cffi` import.
 5. Deploy wrapper to `BIN_DIR/yt-dlp` (default `~/.local/bin/yt-dlp`, `XDG_BIN_HOME` respected).
 6. Create `~/.config/decent-yt-dlp/config` and `~/.cache/decent-yt-dlp/`.
@@ -46,7 +46,7 @@ yt-dlp --version
 
 On every invocation:
 
-- If update interval elapsed (default `1d`), wrapper runs `uv tool upgrade yt-dlp --with curl_cffi --with cffi`, prints `Checking for updates...` + `Updated ...` / `is up to date` to **stderr**, then `exec`s real `yt-dlp`.
+- If update interval elapsed (default `1d`), wrapper runs `uv tool upgrade yt-dlp`, prints `Checking for updates...` + `Updated ...` / `is up to date` to **stderr**, then `exec`s real `yt-dlp`. The `cffi` and `curl_cffi` dependencies recorded during install are retained by the upgrade.
 - If interval not elapsed, wrapper `exec`s immediately (~5ms overhead: one `date +%s` + file read).
 
 `stdout` is never polluted — `yt-dlp -J URL > out.json` stays clean.

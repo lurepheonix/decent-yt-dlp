@@ -163,9 +163,10 @@ do_update() {
         old_ver=$(get_version "$REAL_BIN")
     fi
 
-    # uv tool upgrade keeps --with, but we pass explicitly to be defensive
+    # uv tool upgrade retains the additional packages recorded at install time.
+    # Unlike `tool install`, it does not accept --with.
     set +e
-    "$_uv" tool upgrade yt-dlp --with curl_cffi --with cffi 2>&1
+    "$_uv" tool upgrade yt-dlp 2>&1
     _rc=$?
     set -e
 
